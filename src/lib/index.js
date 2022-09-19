@@ -1,2 +1,2 @@
-import AudioQualityCheck from "./components/Main";
+import AudioQualityCheck from "./components";
 export { AudioQualityCheck };

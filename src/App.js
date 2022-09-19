@@ -1,4 +1,4 @@
-import "./App.css";
+import "./styles/audio-quality-style.css";
 import { AudioQualityCheck } from "./lib";
 
 function App() {

@@ -1,12 +1,15 @@
-export const getUserMedia = (audioSource) => {
+export const getUserMedia = (audioSource = null) => {
   if (window.customUserMediaStream) {
     window.customUserMediaStream.getTracks().forEach((track) => {
       track.stop();
     });
   }
+  const deviceId = audioSource ? { exact: audioSource } : undefined;
   const constraints = {
-    audio: { deviceId: audioSource ? { exact: audioSource } : undefined },
-    video: false,
+    audio: {
+      deviceId,
+      echoCancellation: true,
+    },
   };
 
   return new Promise((res) => {
@@ -23,3 +26,5 @@ export const getUserMedia = (audioSource) => {
 function handleError(error) {
   console.log("navigator error: ", error.message, error.name);
 }
+
+export const acceptedTemplates = ["default"];
