@@ -1,3 +1,2 @@
-import Demo from "./components/Demo";
-
-export { Demo };
+import AudioQualityCheck from "./components/Main";
+export { AudioQualityCheck };
