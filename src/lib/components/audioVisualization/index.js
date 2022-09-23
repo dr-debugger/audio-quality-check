@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
+import DefaultView from "./DefaultView";
 
 const AudioVisualization = ({ template, stream }) => {
   const [flag, setFlag] = useState(false);
+
+  const [currentVol, setCurrentVol] = useState(0);
+
   const getVolume = (stream) => {
     try {
       const audioContext = new AudioContext();
@@ -23,7 +27,9 @@ const AudioVisualization = ({ template, stream }) => {
         let volumeSum = 0;
         for (const volume of volumes) volumeSum += volume;
         const averageVolume = volumeSum / volumes.length;
-        console.log();
+        const value = Math.round(averageVolume / 10);
+        const finalValue = value > 20 ? 20 : value < 1 ? 1 : value;
+        setCurrentVol(finalValue);
       };
 
       setFlag(true);
@@ -32,17 +38,43 @@ const AudioVisualization = ({ template, stream }) => {
     }
   };
 
+  const handleInterval = () => {
+    clearInterval(window.customAudioInterval);
+    window.customAudioVolumeCallback = null;
+  };
+
+  const startInterval = () => {
+    if (window.customAudioInterval) {
+      handleInterval();
+    }
+    window.customAudioInterval = setInterval(
+      window.customAudioVolumeCallback,
+      100
+    );
+  };
+
   useEffect(() => {
     if (flag) {
-      setInterval(window.customAudioVolumeCallback, 100);
+      startInterval();
     }
   }, [flag]);
 
   useEffect(() => {
-    getVolume(stream);
+    // getVolume(stream);
+
+    return () => {
+      handleInterval();
+    };
   }, []);
 
-  return <div>index</div>;
+  return (
+    <>
+      {/* {currentVol > 0 && (
+        <>{template === "default" && <DefaultView value={currentVol} />}</>
+      )} */}
+      <DefaultView value={currentVol} />
+    </>
+  );
 };
 
 export default AudioVisualization;
