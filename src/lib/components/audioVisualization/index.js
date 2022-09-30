@@ -60,7 +60,7 @@ const AudioVisualization = ({ template, stream }) => {
   }, [flag]);
 
   useEffect(() => {
-    // getVolume(stream);
+    getVolume(stream);
 
     return () => {
       handleInterval();
@@ -69,10 +69,9 @@ const AudioVisualization = ({ template, stream }) => {
 
   return (
     <>
-      {/* {currentVol > 0 && (
+      {currentVol > 0 && (
         <>{template === "default" && <DefaultView value={currentVol} />}</>
-      )} */}
-      <DefaultView value={currentVol} />
+      )}
     </>
   );
 };
